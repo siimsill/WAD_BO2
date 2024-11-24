@@ -70,14 +70,15 @@ export default {
   gap: 20px;
   max-width: 600px;
   margin: auto;
+  margin-bottom: 1%;
 }
 
 .post {
-  background-color: white;
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 15px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #e8f5e9;
 }
 
 .post-header {
