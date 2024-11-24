@@ -13,7 +13,6 @@
   color: #fff;
   padding: 10px;
   text-align: center;
-  width: 100%;
 }
 nav a {
   margin: 0 10px;

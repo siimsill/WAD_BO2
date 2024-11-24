@@ -1,61 +1,67 @@
 <template>
   <div>
-    <div class="main-content">
-      <div class="posts" id="posts-container">
-        <div v-for="post in posts" :key="post.post_id" class="post">
-          <div class="post-header">
-            <img :src="post.pfp_url" alt="User Icon" class="profile-image" />
-            <div>
-              <h3 class="post-author">{{ post.author_name }}</h3>
-              <p class="post-date">{{ new Date(post.create_time).toLocaleDateString() }}</p>
-            </div>
-          </div>
-          <div class="post-body">
-            <img v-if="post.photo_url !== 'null'" :src="post.photo_url" alt="Post Image" class="post-image" />
-            <p v-if="post.content !== 'null'" class="post-text">{{ post.content }}</p>
-          </div>
-          <div class="post-actions">
-            <button class="like-button" @click="likePost(post.post_id)">👍</button>
+    <div class="posts" id="posts-container">
+      <div v-for="post in posts" :key="post.post_id" class="post">
+        <div class="post-header">
+          <img :src="post.pfp_url" alt="User Icon" class="profile-image" />
+          <div>
+            <h3 class="post-author">{{ post.author_name }} {{ post.author_lastname }}</h3>
+            <p class="post-date">{{ post.create_year }}-{{ post.create_month }}-{{ post.create_day }}</p>
           </div>
         </div>
+        <div class="post-body">
+          <img v-if="post.photo_url !== 'null'" :src="post.photo_url" alt="Post Image" class="post-image" />
+          <p v-if="post.content !== 'null'" class="post-text">{{ post.content }}</p>
+        </div>
+        <div class="post-actions">
+          <button
+            class="like-button"
+            @click="toggleLike(post.post_id)"
+            :class="{ liked: isLiked(post.post_id) }"
+          >
+            👍
+          </button>
+          <span>{{ getLikes(post.post_id) }} likes</span>
+        </div>
       </div>
+    </div>
+    <!-- Reset Likes Button -->
+    <div class="reset-likes">
+      <button @click="resetAllLikes">Reset All Likes</button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      posts: [],
-    };
+  computed: {
+    posts() {
+      return this.$store.state.posts;
+    },
+    likedPosts() {
+      return this.$store.state.likedPosts;
+    },
   },
   methods: {
-    fetchPosts() {
-      fetch('https://api.jsonbin.io/v3/b/67266e1ae41b4d34e44d2cde', {
-        method: 'GET',
-        headers: {
-          'X-Access-Key': '$2a$10$zxC.9wbsVm/7i.r6SoSpZuU18QrnJA0GO5JBDK97qtohy.0xbrwqG',
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(response => response.json())
-        .then(data => {
-          this.posts = data.record; 
-        })
-        .catch(error => console.error('Error fetching JSON:', error));
+    toggleLike(postId) {
+      this.$store.commit('likePost', postId);
     },
-    likePost(postId) {
-      console.log(`Post ${postId} liked!`);
+    isLiked(postId) {
+      return this.likedPosts.includes(postId);
+    },
+    getLikes(postId) {
+      return this.isLiked(postId) ? 1 : 0;
+    },
+
+    resetAllLikes() {
+      this.$store.commit('resetLikes');
     },
   },
   mounted() {
-    this.fetchPosts(); 
+    this.$store.dispatch('fetchPosts');
   },
 };
 </script>
-
-
 
 <style scoped>
 .posts {
@@ -64,8 +70,6 @@ export default {
   gap: 20px;
   max-width: 600px;
   margin: auto;
-  margin-top: 1%;
-  margin-bottom: 1%;
 }
 
 .post {
@@ -74,7 +78,6 @@ export default {
   border-radius: 10px;
   padding: 15px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  background-color: #e8f5e9;
 }
 
 .post-header {
@@ -99,6 +102,7 @@ export default {
 .post-date {
   font-size: 0.85rem;
   color: #888;
+  text-align: left;
 }
 
 .post-body {
@@ -114,6 +118,7 @@ export default {
 
 .post-text {
   margin: 10px 0;
+  text-align: left;
 }
 
 .like-button {
@@ -128,6 +133,25 @@ export default {
 
 .like-button:hover {
   transform: scale(1.2);
+}
+
+
+.reset-likes {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.reset-likes button {
+  padding: 10px 15px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.reset-likes button:hover {
+  background-color: #e60000;
 }
 
 
