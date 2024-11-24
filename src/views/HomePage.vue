@@ -64,6 +64,8 @@ export default {
   gap: 20px;
   max-width: 600px;
   margin: auto;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 .post {
@@ -72,6 +74,7 @@ export default {
   border-radius: 10px;
   padding: 15px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #e8f5e9;
 }
 
 .post-header {

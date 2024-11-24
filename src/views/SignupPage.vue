@@ -63,7 +63,7 @@ export default {
       if (!/_/.test(this.form.password)) {
         this.errors += '• Password must include the character "_"\n';
       }
-      
+
       console.log(this.errors);
     }
   },
@@ -91,7 +91,7 @@ export default {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  width: 300px;
+  width: 30%;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -107,7 +107,7 @@ label {
   font-size: 1rem;
   color: #333;
   flex: 1; 
-  text-align: right; 
+  text-align: center; 
 }
 
 input {
