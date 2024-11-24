@@ -10,6 +10,9 @@
           <label for="password">Password</label>
           <input type="password" id="password" v-model="form.password" placeholder="Password" />
         </div>
+        <div class="error">
+          {{errors}}
+        </div>
         <button type="submit" class="signup-button" @click.prevent="signup">Signup</button>
       </form>
     </div>
@@ -27,18 +30,53 @@ export default {
         email: "",
         password: "",
       },
+      errors: '',
     };
   },
   methods: {
     signup() {
       console.log("Form submitted:", this.form);
+      this.validate();
     },
+    validate() {
+      this.errors = '';
+      if (this.form.password.length < 8 || this.form.password.length > 15) {
+        this.errors += '• Password must be between 8-15 characters\n';
+      }
+
+      if (!/[A-Z]/.test(this.form.password)) {
+        this.errors += '• Password must include at least one uppercase letter\n';
+      }
+
+      if (!/(?=(.*[a-z]){2})/.test(this.form.password)) {
+        this.errors += '• Password must include at least two lowercase haracters\n';
+      }
+
+      if (!/\d/.test(this.form.password)) {
+        this.errors += '• Password must include at least one numeric value\n';
+      }
+
+      if (!/^[A-Z]/.test(this.form.password)) {
+        this.errors += '• Password must start with an uppercase letter\n';
+      }
+
+      if (!/_/.test(this.form.password)) {
+        this.errors += '• Password must include the character "_"\n';
+      }
+      
+      console.log(this.errors);
+    }
   },
 };
 </script>
 
 
 <style scoped>
+.error {
+  color: #ff0000;
+  white-space: pre-line;
+}
+
 .signup-container {
   display: flex;
   justify-content: center;
